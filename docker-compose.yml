@@ -1,0 +1,109 @@
+version: '3.9'
+
+services:
+  # PostgreSQL for persistent storage
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=msshop50
+      - POSTGRES_USER=msshop50_user
+      - POSTGRES_PASSWORD=msshop50_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Redis for distributed caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Load Balancer
+  load-balancer:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - LOAD_BALANCER_PORT=8000
+    depends_on:
+      - server1
+      - server2
+      - server3
+      - server4
+
+  # Server instances
+  server1:
+    build: .
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=msshop50
+      - POSTGRES_USER=msshop50_user
+      - POSTGRES_PASSWORD=msshop50_password
+    depends_on:
+      - redis
+      - postgres
+    expose:
+      - "3000"
+
+  server2:
+    build: .
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=msshop50
+      - POSTGRES_USER=msshop50_user
+      - POSTGRES_PASSWORD=msshop50_password
+    depends_on:
+      - redis
+      - postgres
+    expose:
+      - "3001"
+
+  server3:
+    build: .
+    environment:
+      - PORT=3002
+      - NODE_ENV=production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=msshop50
+      - POSTGRES_USER=msshop50_user
+      - POSTGRES_PASSWORD=msshop50_password
+    depends_on:
+      - redis
+      - postgres
+    expose:
+      - "3002"
+
+  server4:
+    build: .
+    environment:
+      - PORT=3003
+      - NODE_ENV=production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=msshop50
+      - POSTGRES_USER=msshop50_user
+      - POSTGRES_PASSWORD=msshop50_password
+    depends_on:
+      - redis
+      - postgres
+    expose:
+      - "3003"
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  default:
+    name: msshop50-network

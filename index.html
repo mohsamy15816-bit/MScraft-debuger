@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSshop50 - Minecraft Classic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Game Screen -->
+    <div id="gameContainer" class="screen active">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui">
+            <div id="crosshair">+</div>
+            <div id="inventory">
+                <div class="inventory-slot active" data-block="1">Stone</div>
+                <div class="inventory-slot" data-block="2">Dirt</div>
+                <div class="inventory-slot" data-block="3">Grass</div>
+                <div class="inventory-slot" data-block="4">Wood</div>
+                <div class="inventory-slot" data-block="5">Leaves</div>
+                <div class="inventory-slot" data-block="6">Sand</div>
+                <div class="inventory-slot" data-block="13">Iron Ore</div>
+                <div class="inventory-slot" data-block="15">Diamond</div>
+                <div class="inventory-slot" data-block="21">Glass</div>
+            </div>
+            <div id="stats">
+                <div id="coordinates">X: 0, Y: 0, Z: 0</div>
+                <div id="fps">FPS: 0</div>
+                <button id="respawnBtn">Respawn</button>
+            </div>
+            <div id="instructions">
+                <h2>MSshop50</h2>
+                <p><strong>WASD</strong> - Move</p>
+                <p><strong>SPACE</strong> - Jump</p>
+                <p><strong>LEFT CLICK</strong> - Break Block</p>
+                <p><strong>RIGHT CLICK</strong> - Place Block</p>
+                <p><strong>0-9</strong> - Select Block (0=block 10)</p>
+                <p><strong>SCROLL</strong> - Cycle Blocks</p>
+                <p><strong>I</strong> - Toggle Inventory</p>
+                <p><strong>ESC</strong> - Toggle Instructions</p>
+            </div>
+            
+            <!-- Inventory Overlay -->
+            <div id="inventoryOverlay" class="inventory-modal hidden">
+                <div class="inventory-panel">
+                    <h2>Inventory</h2>
+                    <div class="inventory-grid">
+                        <div class="inventory-item" data-block="1" data-count="0">
+                            <div class="item-name">Stone</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="2" data-count="0">
+                            <div class="item-name">Dirt</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="3" data-count="0">
+                            <div class="item-name">Grass</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="4" data-count="0">
+                            <div class="item-name">Wood</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="5" data-count="0">
+                            <div class="item-name">Leaves</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="6" data-count="0">
+                            <div class="item-name">Sand</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="7" data-count="0">
+                            <div class="item-name">Gravel</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="8" data-count="0">
+                            <div class="item-name">Clay</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="11" data-count="0">
+                            <div class="item-name">Obsidian</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="12" data-count="0">
+                            <div class="item-name">Coal Ore</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="13" data-count="0">
+                            <div class="item-name">Iron Ore</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="14" data-count="0">
+                            <div class="item-name">Gold Ore</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="15" data-count="0">
+                            <div class="item-name">Diamond Ore</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="16" data-count="0">
+                            <div class="item-name">Copper Ore</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="17" data-count="0">
+                            <div class="item-name">Brick</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="18" data-count="0">
+                            <div class="item-name">Concrete</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="19" data-count="0">
+                            <div class="item-name">Marble</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="20" data-count="0">
+                            <div class="item-name">Tiles</div>
+                            <div class="item-count">0</div>
+                        </div>
+                        <div class="inventory-item" data-block="21" data-count="0">
+                            <div class="item-name">Glass</div>
+                            <div class="item-count">0</div>
+                        </div>
+                    </div>
+                    <button id="closeInventoryBtn" class="close-inventory">Close (I)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="javascript.js"></script>
+</body>
+</html>
